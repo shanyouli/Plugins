@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # 在 shell 中快速跳转到常用目录
-# see @
+
 [[ -z $MARKPATH ]] && export MARKPATH=~/.cache/bash/bookmark
 
 _mark_find_file() { find "$MARKPATH" -type l -exec ls -l {} \; ; }
@@ -20,7 +20,7 @@ _exist_fzf_peco_percol() {
     done
 }
 
-function mark {
+mark() {
     local marksname # Existing bookmarks
     local dir_name # Prepare a global path as a bookmark
     local current_name # bookmarks name
@@ -74,7 +74,7 @@ _bookmark_jump_exist_fzf() {
     }
 }
 
-function jump {
+jump() {
     if [[  -z $(_exist_fzf_peco_percol) ]]; then
         [[ -n "$1" ]] && {
             cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
@@ -84,7 +84,7 @@ function jump {
     fi
 }
 
-function unmark() {
+unmark() {
     if [[ -d $MARKPATH ]]; then
         rm -i "$MARKPATH/$1"
     else
@@ -94,7 +94,7 @@ function unmark() {
     fi
 }
 
-function marks() {
+marks() {
     [[ ! -d $MARKPATH ]] && {
         echo "Not created $MARKPATH, Please add a bookmark first!"
         echo
