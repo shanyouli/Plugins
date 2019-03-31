@@ -65,28 +65,33 @@ mark() {
     ln -s "$(pwd)" "$MARKPATH/$current_name"
 }
 
-_bookmark_jump_exist_fzf() {
-    local jump_pwd
-    jump_pwd=$(find "$MARKPATH" -type l | eval "$(_exist_fzf_peco_percol)")
-
-    [[ -n "$jump_pwd" ]] && {
-        cd -P "$jump_pwd" || return 1
-    }
+_bookmark_using_fzf_etc() {
+    find "$MARKPATH" -type l | eval "$(_exist_fzf_peco_percol)"
 }
 
 jump() {
-    if [[  -z $(_exist_fzf_peco_percol) ]]; then
-        [[ -n "$1" ]] && {
-            cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
+    local x
+    if [[ -z "$1" ]] && [[ -n $(_exist_fzf_peco_percol) ]]; then
+        x=$(_bookmark_using_fzf_etc)
+        [[ -e "$x" ]] && {
+            cd -P "$x" || return 1
         }
+    elif [[ -n "$1" ]]; then
+        cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
     else
-        _bookmark_jump_exist_fzf
+        echo "No goal, run 'jump marks'!!!"
     fi
 }
 
 unmark() {
+    local x
     if [[ -d $MARKPATH ]]; then
-        rm -i "$MARKPATH/$1"
+        if [[ -z "$1" ]] && [[ -n $(_exist_fzf_peco_percol) ]]; then
+            x=$(_bookmark_using_fzf_etc)
+            [[ -e $x ]] && rm -i "$x"
+        else
+            rm -i "$MARKPATH/$1"
+        fi
     else
         echo "Not created $MARKPATH, Please add a bookmark first!"
         echo
