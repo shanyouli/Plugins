@@ -19,8 +19,8 @@
 
 ### 2019.03.31
 
-- 修复 `jump` 和 `unmarks` 需要按两次 `Return` 键的漏洞
-- 修复, 当使用 `jump` 和 `unmarks` 时,若同时存在 *$1* 和 **fzf or percol or peco** 的逻辑问题
+- 修复 `jump` 和 `unmark` 需要按两次 `Return` 键的漏洞
+- 修复, 当使用 `jump` 和 `unmark` 时,若同时存在 *$1* 和 **fzf or percol or peco** 的逻辑问题
 
 ### 2019.03.30 
 
